@@ -5,7 +5,7 @@
 Datan i databasen skulle kunna kräva följande:
 
 ### Users
-- id
+- ID
 - name
 - email
 
@@ -15,25 +15,25 @@ Datan i databasen skulle kunna kräva följande:
 - code
 
 ### Assignments
-- id
+- ID
 - title
 - description
 - deadline
-- courseId
+- courseID
 
 ### StudyPlans
-- id
-- userId
+- ID
+- userID
 - tasks
 - dates
 
 ### Questions / Answers
-- id
-- userId
+- ID
+- userID
 - question
 - answer
 
 ### Resources
-- id
+- ID
 - title
 - link
