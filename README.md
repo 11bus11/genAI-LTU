@@ -10,7 +10,7 @@ Datan i databasen skulle kunna kräva följande:
 - email
 
 ### Courses
-- id
+- ID
 - name
 - code
 
