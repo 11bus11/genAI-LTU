@@ -1,39 +1,39 @@
 # genAI-LTU
 
-# Data
+## Database (Preliminary)
 
-Exempel på data som databasen skulle kunna kräva:
+Datan i databasen skulle kunna kräva följande:
 
-# Users
-id
-name
-email
+### Users
+- id
+- name
+- email
 
-# Courses
-id
-name
-code
+### Courses
+- id
+- name
+- code
 
-# Assignments
-id
-title
-description
-deadline
-courseId
+### Assignments
+- id
+- title
+- description
+- deadline
+- courseId
 
-# StudyPlans
-id
-userId
-tasks
-dates
+### StudyPlans
+- id
+- userId
+- tasks
+- dates
 
-# Questions / Answers
-id
-userId
-question
-answer
+### Questions / Answers
+- id
+- userId
+- question
+- answer
 
-# Resources
-id
-title
-link
+### Resources
+- id
+- title
+- link
