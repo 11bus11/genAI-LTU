@@ -1,6 +1,6 @@
 # genAI-LTU
 
-## Database (Preliminary)
+## Data for the database
 
 Datan i databasen skulle kunna kräva följande:
 
