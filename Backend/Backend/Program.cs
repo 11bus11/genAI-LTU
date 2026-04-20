@@ -1,7 +1,18 @@
+using Google.GenAI;
+using Microsoft.Extensions.AI;
+
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddSingleton<GeminiService>();
 var app = builder.Build();
 
 app.MapGet("/", () => "Hello World!");
+
+app.MapGet("/ai", async(string prompt, GeminiService geminiService) =>
+{
+    var result = await geminiService.GenerateTextAsync(prompt);
+    return Results.Ok(result);
+});
 
 //builder.Services.AddControllers();
 
