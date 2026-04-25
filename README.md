@@ -16,6 +16,23 @@ Datan i databasen skulle kunna kräva följande:
 - name
 - code
 
+
+## Lägga till kursdata i databasen
+
+Kursdata kan läggas till via backend med Entity Framework Core.
+
+Just nu innehåller databasen en `Courses`-tabell med följande fält:
+
+- id
+- name
+- code
+
+Exempel på en kurs:
+
+```text
+Name: Webbutveckling
+Code: D0027E
+
 ### Assignments
 - ID
 - title
