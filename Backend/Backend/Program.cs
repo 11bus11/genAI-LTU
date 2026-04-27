@@ -1,22 +1,41 @@
 using Google.GenAI;
 using Microsoft.Extensions.AI;
 
-var builder = WebApplication.CreateBuilder(args);
-
-builder.Services.AddSingleton<GeminiService>();
-var app = builder.Build();
-
-app.MapGet("/", () => "Hello World!");
-
-app.MapGet("/ai", async(string prompt, GeminiService geminiService) =>
+namespace Backend
 {
-    var result = await geminiService.GenerateTextAsync(prompt);
-    return Results.Ok(result);
-});
+    public class Program
+    {
+        public static void Main(string[] args)
+        {
+            var builder = WebApplication.CreateBuilder(args);
+
+            // Add services to the container.
+            builder.Services.AddControllers();
+            builder.Services.AddSwaggerGen();
+            builder.Services.AddHttpClient<GeminiService>();
+
+            var app = builder.Build();
+
+            // Configure the HTTP request pipeline.
+            if (app.Environment.IsDevelopment())
+            {
+                app.UseSwagger();
+                app.UseSwaggerUI();
+            }
+
+            app.UseHttpsRedirection();
+
+            app.UseAuthorization();
+
+            app.MapControllers();
+
+            app.Run();
+        }
+    }
+}
 
 //builder.Services.AddControllers();
 
 //string connectionString = builder.Configuration.GetConnectionString("Default") ?? throw new InvalidOperationException("Connection string 'Default' not found.");
 //builder.Services.AddDbContext<AppDbContext>(op=> op.UseSqlite(connectionString));
 
-app.Run();
