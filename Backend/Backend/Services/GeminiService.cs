@@ -5,16 +5,19 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using Google.GenAI;
 using Google.GenAI.Types;
+using Microsoft.Extensions.Configuration;
+
 
 public class GeminiService
 {
     private readonly HttpClient _httpClient;
-    private readonly string apiKey = "AIzaSyCBc89eeLjrbeG77gcZ68GE0878AYcUrM4";
+    private readonly string apiKey;
     //private readonly string url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent";
 
-    public GeminiService(HttpClient httpClient)
+    public GeminiService(HttpClient httpClient, IConfiguration configuration)
     {
         this._httpClient = httpClient;
+        this.apiKey = ""; //add api key here
     }
 
     public async Task<string> getChatResponse(string prompt)

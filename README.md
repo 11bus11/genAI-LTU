@@ -56,3 +56,7 @@ Code: D0027E
 - ID
 - title
 - link
+
+## Swagger 
+Swagger runs on http://localhost:3000/swagger
+Use it to see endpoints
