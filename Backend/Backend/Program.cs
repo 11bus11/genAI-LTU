@@ -1,9 +1,16 @@
 using Google.GenAI;
 using Microsoft.Extensions.AI;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration.UserSecrets;
 
 using System.Net.Http.Headers;
 
+builder.Services.AddSingleton<GeminiService>();
+
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseSqlite("Data Source=Data/app.db"));
+
+var app = builder.Build();
 namespace Backend
 {
     public class Program
@@ -26,6 +33,13 @@ namespace Backend
             builder.Services.AddSwaggerGen();
             builder.Services.AddHttpClient<GeminiService>();
 
+app.MapGet("/ai", async (string prompt, GeminiService geminiService) =>
+{
+    var result = await geminiService.GenerateTextAsync(prompt);
+    return Results.Ok(result);
+});
+
+app.Run();
             var allowedOrigins = builder.Configuration.GetSection("allowedOrigins").Get<string[]>()!;
 
             builder.Services.AddCors(options =>
