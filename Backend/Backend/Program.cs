@@ -1,5 +1,8 @@
 using Google.GenAI;
 using Microsoft.Extensions.AI;
+using Microsoft.Extensions.Configuration.UserSecrets;
+
+using System.Net.Http.Headers;
 
 namespace Backend
 {
@@ -8,11 +11,32 @@ namespace Backend
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+            builder.Configuration.AddUserSecrets<Program>();
 
             // Add services to the container.
             builder.Services.AddControllers();
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowReactApp",
+                    builder => builder
+                        .WithOrigins("http://localhost:3000")
+                        .AllowAnyMethod()
+                        .AllowAnyHeader());
+            });
             builder.Services.AddSwaggerGen();
             builder.Services.AddHttpClient<GeminiService>();
+
+            var allowedOrigins = builder.Configuration.GetSection("allowedOrigins").Get<string[]>()!;
+
+            builder.Services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(policy =>
+                {
+                    policy.WithOrigins(allowedOrigins)
+                          .AllowAnyHeader()
+                          .AllowAnyMethod();
+                });
+            });
 
             var app = builder.Build();
 
@@ -23,7 +47,11 @@ namespace Backend
                 app.UseSwaggerUI();
             }
 
+            app.UseCors();
+
             app.UseHttpsRedirection();
+
+            app.UseCors("AllowReactApp");
 
             app.UseAuthorization();
 
