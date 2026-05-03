@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration.UserSecrets;
+using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +11,9 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlite("Data Source=Data/app.db"));
+
+    builder.Services.AddIdentity<IdentityUser, IdentityRole>()
+        .AddEntityFrameworkStores<AppDbContext>();
 
 builder.Services.AddHttpClient<GeminiService>();
 
@@ -33,6 +37,7 @@ app.UseHttpsRedirection();
 
 app.UseCors("AllowReactApp");
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
