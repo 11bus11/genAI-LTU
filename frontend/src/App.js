@@ -1,5 +1,5 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { use, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
     BrowserRouter as Router,
     Routes,
@@ -7,6 +7,8 @@ import {
 } from "react-router-dom";
 import CreatePlan from './pages/createPlan';
 import MyPlans from './pages/myPlans';
+import Login from './pages/login';
+import ViewPlan from './pages/viewPlan';
 
 function App() {
   const [chatResponse, setChatResponse] = useState();
@@ -30,10 +32,12 @@ function App() {
 
   return (
     <Router>
-      <Routes>
-        <Route path="/create-plan" element={<CreatePlan />} />
-        <Route path="/my-plans" element={<MyPlans />} />
-      </Routes>
+     <Routes>
+  <Route path="/create-plan" element={<CreatePlan />} />
+  <Route path="/my-plans" element={<MyPlans />} />
+  <Route path="/login" element={<Login />} />
+  <Route path="/view-plan" element={<ViewPlan />} />
+</Routes>
     </Router>
   );
 }
