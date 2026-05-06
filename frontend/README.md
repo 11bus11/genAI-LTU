@@ -68,3 +68,29 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `npm run build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+
+### How to add test user
+Steps:
+
+1. Start the backend:
+Open a terminal and run these commands in order:
+cd Backend/Backend
+dotnet run
+
+2. Open Swagger in your browser:
+http://localhost:5000/swagger
+
+3. Locate the endpoint:
+POST /api/auth/create-test-user
+
+4. Click "Try it out" and then "Execute".
+
+If successful, you should see:
+"User created"
+
+If a user already exists you will see:
+"User already exists"
+
+Login credentials:
+Email: student@ltu.se
+Password: Test123!
