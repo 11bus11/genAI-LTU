@@ -17,7 +17,7 @@ public class GeminiService
     public GeminiService(HttpClient httpClient, IConfiguration configuration)
     {
         this._httpClient = httpClient;
-        this.apiKey = "AIzaSyCm0kCrE23DmDYDHEOLKzJrPjZsHOmBev4"; //add api key here
+        this.apiKey = ""; //add api key here
     }
 
     public async Task<string> getChatResponse(string prompt)
