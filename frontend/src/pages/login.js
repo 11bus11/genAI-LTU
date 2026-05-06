@@ -1,9 +1,11 @@
 import { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { useNavigate } from 'react-router-dom';
 
 function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const navigate = useNavigate();
 
   const handleLogin = async () => {
     const res = await fetch("http://localhost:5000/api/auth/login", {
@@ -21,7 +23,7 @@ function Login() {
 
     localStorage.setItem("user", data.email);
 
-    alert("Inloggning lyckades");
+    navigate("/my-plans");
   };
 
   return (
