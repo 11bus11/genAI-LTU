@@ -15,16 +15,17 @@ function CreatePlan() {
   const deadline = "";
   const studyTime = "";
   const description = "";
+  const planContent = "";
 
   useEffect(() => {
-    async function fetchDataAi() {
+    async function fetchDataAi(corse, deadline, studyTime, description) {
       // Example of fetching data from the backend
       fetch('/api/Chat/chat', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify('Hello'),
+        body: JSON.stringify('Skapa en studieplan för kursen ' + corse + 'med deadline' + deadline + ', studietid ' + studyTime + 'timmar per vecka och beskrivning ' + description + '. Planen ska innehålla en översikt över vad som behöver göras varje vecka fram till deadline.'),
       })
         .then(response => {
           if (!response.ok) {
@@ -37,17 +38,36 @@ function CreatePlan() {
           setChatResponse(data);
         })
         .catch(error => console.error('Error fetching data:', error));
-      }
+    }
+    const generateButton = document.querySelector('#generate');
+    const handleClick = (e) => {
+      e.target.textContent = "Genererar...";
 
-      fetchDataAi();
-    }, [])
+      const corse = document.querySelector('#course').value;
+      const deadline = document.querySelector('#deadline').value;
+      const studyTime = document.querySelector('#time').value;
+      const description = document.querySelector('#desc').value;
+
+      fetchDataAi(corse, deadline, studyTime, description);
+    };
+
+    if (generateButton) {
+      generateButton.addEventListener('click', handleClick);
+    }
+
+    return () => {
+      if (generateButton) {
+        generateButton.removeEventListener('click', handleClick);
+      }
+    };
+  }, []);
 
   return (
     <div className="container-fluid min-vh-100 p-4" style={{ backgroundColor: "#174a7c" }}>
 
       {/* Top bar */}
       <div className="d-flex justify-content-between text-white mb-4">
-        <span><NavLink to="/my-plans" activeStyle>Home</NavLink></span>
+        <NavLink to="/my-plans" activeStyle>Home</NavLink>
         <span>Logga ut</span>
       </div>
 
@@ -62,26 +82,26 @@ function CreatePlan() {
 
           <div className="mb-3">
             <label>Kursnamn</label>
-            <input className="form-control" placeholder="Skriv kurs..." />
+            <input id="course" className="form-control" placeholder="Skriv kurs..." />
           </div>
 
           <div className="mb-3">
             <label>Deadline</label>
-            <input type="date" className="form-control" />
+            <input id="deadline" type="date" className="form-control" />
           </div>
 
           <div className="mb-3">
             <label>Studietid (timmar/vecka)</label>
-            <input className="form-control" placeholder="T.ex. 10" />
+            <input id="time" className="form-control" placeholder="T.ex. 10" />
           </div>
 
           <div className="mb-3">
             <label>Beskrivning</label>
-            <textarea className="form-control" placeholder="Beskriv kursen..."></textarea>
+            <textarea id="desc" className="form-control" placeholder="Beskriv kursen..."></textarea>
           </div>
 
           <div className="d-flex justify-content-between mt-4">
-            <button className="btn btn-success">Generera studieplan</button>
+            <button id="generate" className="btn btn-success">Generera studieplan</button>
             <button className="btn btn-danger">Avbryt</button>
           </div>
 
