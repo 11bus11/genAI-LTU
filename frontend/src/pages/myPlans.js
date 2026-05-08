@@ -1,6 +1,22 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { useEffect, useState } from 'react';
 
 function MyPlans() {
+  const [plans, setPlans] = useState([]);
+
+  useEffect(() => {
+    fetch ("http://localhost:5000/api/studyplan/my-plans", {
+      headers: {
+        "user-email": localStorage.getItem("user")
+      }
+    })
+      .then(response => response.json())
+      .then(data => {
+        console.log(data);
+        setPlans(data);
+      });
+  }, []);
+
   return (
     <div className="container-fluid min-vh-100 p-4" style={{ backgroundColor: "#174a7c" }}>
 
