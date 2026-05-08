@@ -1,25 +1,59 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useState } from 'react';
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { NavLink } from "react-router-dom";
+import {
+    BrowserRouter as Router,
+    Routes,
+    Route,
+} from "react-router-dom";
 
 function CreatePlan() {
-  const [chatResponse] = useState(null);
+  const [chatResponse, setChatResponse] = useState();
+  const corse = "";
+  const deadline = "";
+  const studyTime = "";
+  const description = "";
+
+  useEffect(() => {
+    async function fetchDataAi() {
+      // Example of fetching data from the backend
+      fetch('/api/Chat/chat', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify('Hello'),
+      })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          return response.json();
+        })
+        .then(data => {
+          console.log(data);
+          setChatResponse(data);
+        })
+        .catch(error => console.error('Error fetching data:', error));
+      }
+
+      fetchDataAi();
+    }, [])
 
   return (
     <div className="container-fluid min-vh-100 p-4" style={{ backgroundColor: "#174a7c" }}>
 
       {/* Top bar */}
       <div className="d-flex justify-content-between text-white mb-4">
-        <span>Home</span>
+        <span><NavLink to="/my-plans" activeStyle>Home</NavLink></span>
         <span>Logga ut</span>
       </div>
 
       <h2 className="text-center text-white mb-5">Generera studieplan</h2>
 
-      {chatResponse ? (
-        <p className="text-white">{chatResponse.response}</p>
-      ) : (
-        <p className="text-white">Laddar...</p>
-      )}
+      
 
       <div className="row bg-white rounded p-4 mx-auto" style={{ maxWidth: "1000px" }}>
 
@@ -58,7 +92,11 @@ function CreatePlan() {
           className="col-md-6 offset-md-1 border rounded d-flex align-items-center justify-content-center"
           style={{ height: "300px", backgroundColor: "#ffffff" }}
         >
-          <p className="text-muted">Studieplan kommer visas här</p>
+        {chatResponse ? (
+          <p className="text-black">{chatResponse.response}</p>
+          ) : (
+          <p className="text-muted">Laddar...</p>
+        )}
         </div>
 
       </div>
