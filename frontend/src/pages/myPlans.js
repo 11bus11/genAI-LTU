@@ -54,7 +54,7 @@ function MyPlans() {
           <p>Deadline: 15 maj</p>
           <div className="d-flex justify-content-between">
             <button className="btn btn-primary btn-sm">Öppna</button>
-            <button className="btn btn-danger btn-sm" onClick={() => handleDelete(plan.id)}>
+            <button className="btn btn-danger btn-sm" onClick={() => handleDelete(1)}>
               Ta bort
             </button>
           </div>
@@ -65,7 +65,7 @@ function MyPlans() {
           <p>Deadline: 1 juni</p>
           <div className="d-flex justify-content-between">
             <button className="btn btn-primary btn-sm">Öppna</button>
-            <button className="btn btn-danger btn-sm" onClick={() => handleDelete(plan.id)}>
+            <button className="btn btn-danger btn-sm" onClick={() => handleDelete(2)}>
               Ta bort
             </button>
           </div>
