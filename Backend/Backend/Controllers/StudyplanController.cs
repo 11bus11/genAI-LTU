@@ -57,4 +57,34 @@ public class StudyPlanController :ControllerBase
 
         return Ok("Studieplanen har tagits bort");
     }
+
+        [HttpPost("populate-test-data")]
+    public async Task<IActionResult> PopulateTestData()
+    {
+        var email = "student1@ltu.se";
+
+        var user = await _userManager.FindByEmailAsync(email);
+
+        if (user == null)
+            return NotFound("Testanvändare hittades inte.");
+
+        if (!_context.StudyPlans.Any(sp => sp.UserId == user.Id))
+        {
+            _context.StudyPlans.Add(new StudyPlan
+            {
+                Name = "Databaser Studieplan",
+                UserId = user.Id
+            });
+
+            _context.StudyPlans.Add(new StudyPlan
+            {
+                Name = "Java Studieplan",
+                UserId = user.Id
+            });
+
+            await _context.SaveChangesAsync();
+        }
+
+        return Ok("Test studieplaner har lagts till.");
+    }
 }
