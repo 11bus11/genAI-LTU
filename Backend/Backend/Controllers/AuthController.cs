@@ -17,22 +17,33 @@ public class AuthController : ControllerBase
 
     [HttpPost("create-test-user")]
     public async Task<IActionResult> CreateTestUser()
-    {
-        var email = "student@ltu.se";
-        var password = "Test123!";
+{
+        var testUsers = new[]
+        {
+            new { Email = "student1@ltu.se", Password = "Test321!" },
+            new { Email = "student2@ltu.se", Password = "Test123!" }
+        };
 
-        var existingUser = await _userManager.FindByEmailAsync(email);
+        foreach (var testUser in testUsers)
+        {
+            var existingUser = await _userManager.FindByEmailAsync(testUser.Email);
 
-        if (existingUser != null)
-            return BadRequest("Användaren finns redan");
+            if (existingUser == null)
+            {
+                var user = new IdentityUser
+                {
+                    UserName = testUser.Email,
+                    Email = testUser.Email
+                };
 
-        var user = new IdentityUser { UserName = email, Email = email };
-        var result = await _userManager.CreateAsync(user, password);
+            var result = await _userManager.CreateAsync(user, testUser.Password);
 
-        if (!result.Succeeded)
-            return BadRequest(result.Errors);
+            if (!result.Succeeded)
+                return BadRequest($"Kunde inte skapa användaren {testUser.Email}");
+            }
+        }
 
-        return Ok("Användare skapad");
+        return Ok("Testanvändare har skapats.");
     }
 
     [HttpPost("login")]
