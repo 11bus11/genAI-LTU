@@ -23,6 +23,18 @@ function MyPlans() {
       .catch(error => console.error('Error fetching plans:', error));
   }, []);
 
+    const handleDelete = async (id) => {
+      const response = await fetch(`http://localhost:5000/api/studyplan/delete/${id}`, {
+        method: 'DELETE',
+      });
+
+      if (!response.ok) {
+        console.error('Kunde inte ta bort studieplanen');
+        return;
+      }
+      setPlans(plans.filter(plan => plan.id !== id));
+    }
+
   return (
     <div className="container-fluid min-vh-100 p-4" style={{ backgroundColor: "#174a7c" }}>
 
@@ -42,7 +54,9 @@ function MyPlans() {
           <p>Deadline: 15 maj</p>
           <div className="d-flex justify-content-between">
             <button className="btn btn-primary btn-sm">Öppna</button>
-            <button className="btn btn-danger btn-sm">Ta bort</button>
+            <button className="btn btn-danger btn-sm" onClick={() => handleDelete(plan.id)}>
+              Ta bort
+            </button>
           </div>
         </div>
 
@@ -51,7 +65,9 @@ function MyPlans() {
           <p>Deadline: 1 juni</p>
           <div className="d-flex justify-content-between">
             <button className="btn btn-primary btn-sm">Öppna</button>
-            <button className="btn btn-danger btn-sm">Ta bort</button>
+            <button className="btn btn-danger btn-sm" onClick={() => handleDelete(plan.id)}>
+              Ta bort
+            </button>
           </div>
         </div>
 

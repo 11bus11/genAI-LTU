@@ -41,4 +41,20 @@ public class StudyPlanController :ControllerBase
         .ToListAsync();
 
     return Ok(plans);
-}}
+    }
+
+    //Delete a study plan
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteStudyPlan(int id)
+    {
+        var plan = await _context.StudyPlans.FindAsync(id);
+
+        if (plan == null)
+            return NotFound("Studieplanen hittades inte");
+
+        _context.StudyPlans.Remove(plan);
+        await _context.SaveChangesAsync();
+
+        return Ok("Studieplanen har tagits bort");
+    }
+}
