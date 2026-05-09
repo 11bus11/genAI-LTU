@@ -42,7 +42,29 @@ public class StudyPlanController :ControllerBase
 
     return Ok(plans);
     }
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetStudyPlan(int id)
+    {
+        var plan = await _context.StudyPlans
+            .Include(sp => sp.Courses)
+            .FirstOrDefaultAsync(sp => sp.Id == id);
 
+        if (plan == null)
+            return NotFound("Studieplanen hittades inte");
+
+        return Ok(new
+        {
+            plan.Id,
+            plan.Name,
+            plan.CourseName,
+            plan.CourseCode,
+            plan.StartDate,
+            plan.Deadline,
+            plan.StudyHoursPerWeek,
+            plan.GeneratedPlan,
+            Courses = plan.Courses
+        });
+    }
     //Delete a study plan
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteStudyPlan(int id)
