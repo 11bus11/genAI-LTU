@@ -1,6 +1,7 @@
 # genAI-LTU
 
 [React guide](frontend/README.md)
+[.NET guide](Backend/Backend/README.md)
 
 ## Data for the database
 
