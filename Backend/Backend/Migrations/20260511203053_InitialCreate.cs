@@ -76,9 +76,7 @@ namespace Backend.Migrations
                     StartDate = table.Column<DateTime>(type: "TEXT", nullable: false),
                     Deadline = table.Column<DateTime>(type: "TEXT", nullable: false),
                     StudyHoursPerWeek = table.Column<int>(type: "INTEGER", nullable: false),
-                    PlanContent = table.Column<string>(type: "TEXT", nullable: false),
-                    CourseName = table.Column<string>(type: "TEXT", nullable: false),
-                    CourseCode = table.Column<string>(type: "TEXT", nullable: false)
+                    PlanContent = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
