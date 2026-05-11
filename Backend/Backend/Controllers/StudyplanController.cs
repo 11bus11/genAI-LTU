@@ -9,6 +9,8 @@ public class StudyPlanController :ControllerBase
     private readonly AppDbContext _context;
     private readonly UserManager<IdentityUser> _userManager;
 
+
+
     public StudyPlanController(AppDbContext context, UserManager<IdentityUser> userManager)
     {
         _context = context;
@@ -16,6 +18,47 @@ public class StudyPlanController :ControllerBase
     }
 
     //CREATE a new study plan
+    [HttpPost("create")]
+    public async Task<IActionResult> Create([FromBody] CreateStudyPlanRequest request)
+    {
+        if (request == null)
+            return BadRequest("Begäran är tom");
+
+        if (string.IsNullOrEmpty(request.Email))
+            return BadRequest("Email saknas");
+
+        if (string.IsNullOrEmpty(request.CourseCode))
+            return BadRequest("Kurskod saknas");
+
+        var course = await _context.Courses.FirstOrDefaultAsync(c => c.Code == request.CourseCode);
+        
+        if (course == null)
+            return BadRequest($"Kursen med kod {request.CourseCode} hittades inte");
+        
+        var user = await _userManager.FindByEmailAsync(request.Email);
+        
+        if (user == null)
+            return BadRequest($"Användaren med email {request.Email} hittades inte");
+
+        var studyPlan = new StudyPlan
+        {
+            Name = $"Study Plan for {course.Name}",
+            UserId = user.Id,
+            CourseId = course.Id,
+            StartDate = request.StartDate,
+            Deadline = request.Deadline,
+            StudyHoursPerWeek = request.StudyHoursPerWeek,
+            PlanContent = request.PlanContent
+        };
+
+        _context.StudyPlans.Add(studyPlan);
+        await _context.SaveChangesAsync();
+
+        return Ok(new { message = "Study plan created successfully", id = studyPlan.Id });
+    }
+
+
+    
 
     //Fetch all study plans for a user
     [HttpGet("my-plans")]
@@ -47,7 +90,7 @@ public class StudyPlanController :ControllerBase
 
     return Ok(plans);
     }
-    [HttpGet("{id}")]
+    /*[HttpGet("{id}")]
     public async Task<IActionResult> GetStudyPlan(int id)
     {
         var plan = await _context.StudyPlans
@@ -70,6 +113,7 @@ public class StudyPlanController :ControllerBase
             Courses = plan.Courses
         });
     }
+    */
     //Delete a study plan
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteStudyPlan(int id)

@@ -1,10 +1,13 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
+import { logout } from '../utils/auth';
 
 function ViewPlan() {
   const { id } = useParams();
   const [plan, setPlan] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetch(`http://localhost:5000/api/StudyPlan/${id}`)
@@ -17,11 +20,14 @@ function ViewPlan() {
     return <p>Laddar studieplan...</p>;
   }
 
+
   return (
     <div className="container-fluid min-vh-100 p-4" style={{ backgroundColor: "#174a7c" }}>
       <div className="d-flex justify-content-between text-white mb-4">
         <span>Home</span>
-        <span>Logga ut</span>
+        <span onClick={() => logout(navigate)} style={{ cursor: 'pointer' }}>
+          Logga ut
+        </span>
       </div>
 
       <h2 className="text-center text-white mb-5">
