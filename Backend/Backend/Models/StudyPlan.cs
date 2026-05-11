@@ -13,4 +13,6 @@ public class StudyPlan
     public DateTime Deadline { get; set; }
     public int StudyHoursPerWeek { get; set; }
     public string PlanContent { get; set; } = "";
+    public string CourseName { get; set; } = "";
+    public string CourseCode { get; set; } = "";
 }

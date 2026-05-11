@@ -20,7 +20,7 @@ function App() {
   <Route path="/create-plan" element={<CreatePlan />} />
   <Route path="/my-plans" element={<MyPlans />} />
   <Route path="/login" element={<Login />} />
-  <Route path="/view-plan" element={<ViewPlan />} />
+  <Route path="/view-plan/:id" element={<ViewPlan />} />
 </Routes>
     </Router>
   );

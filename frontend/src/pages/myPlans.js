@@ -1,6 +1,7 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { logout } from '../utils/auth';
 
 function MyPlans() {
   const [plans, setPlans] = useState([]);
@@ -9,7 +10,7 @@ function MyPlans() {
   useEffect(() => {
     fetch("http://localhost:5000/api/StudyPlan/my-plans", {
       headers: {
-        "user-email": "student@ltu.se"
+        "user-email": localStorage.getItem("user")
       }
     })
       .then((res) => res.json())
@@ -41,15 +42,23 @@ function MyPlans() {
     >
       <div className="d-flex justify-content-between text-white mb-4">
         <span>Home</span>
-        <span>Logga ut</span>
+        <span
+          onClick={() => logout(navigate)}
+          style={{ cursor: "pointer" }}
+        >
+          Logga ut
+</span>
       </div>
 
       <div className="mx-auto" style={{ maxWidth: "900px" }}>
         <div className="d-flex justify-content-between align-items-center mb-3">
           <h2 className="text-white">Mina studieplaner</h2>
 
-          <button className="btn btn-success btn-sm">
-            + Generera ny studieplan
+          <button
+            className="btn btn-success"
+            onClick={() => navigate('/create-plan')}
+          >
+          Generera ny studieplan
           </button>
         </div>
 
