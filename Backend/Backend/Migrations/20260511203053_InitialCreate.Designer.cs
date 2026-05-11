@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Backend.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260511192047_InitialCreate")]
+    [Migration("20260511203053_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -236,16 +236,8 @@ namespace Backend.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("CourseCode")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
                     b.Property<int>("CourseId")
                         .HasColumnType("INTEGER");
-
-                    b.Property<string>("CourseName")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
 
                     b.Property<DateTime>("Deadline")
                         .HasColumnType("TEXT");

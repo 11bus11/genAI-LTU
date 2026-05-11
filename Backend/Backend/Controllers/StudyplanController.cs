@@ -45,8 +45,6 @@ public class StudyPlanController :ControllerBase
             Name = $"Study Plan for {course.Name}",
             UserId = user.Id,
             CourseId = course.Id,
-            CourseName = course.Name,
-            CourseCode = course.Code,
             StartDate = request.StartDate,
             Deadline = request.Deadline,
             StudyHoursPerWeek = request.StudyHoursPerWeek,
@@ -82,8 +80,8 @@ public class StudyPlanController :ControllerBase
         {
             sp.Id,
             sp.Name,
-            sp.CourseName,
-            sp.CourseCode,
+            CourseName = _context.Courses.Where(c => c.Id == sp.CourseId).Select(c => c.Name).FirstOrDefault(),
+            CourseCode = _context.Courses.Where(c => c.Id == sp.CourseId).Select(c => c.Code).FirstOrDefault(),
             sp.StartDate,
             sp.Deadline,
             sp.StudyHoursPerWeek
@@ -143,31 +141,39 @@ public class StudyPlanController :ControllerBase
 
             if (!_context.StudyPlans.Any(sp => sp.UserId == user.Id))
             {
-                _context.StudyPlans.Add(new StudyPlan
-                {
-                    Name = "Databaser D0027E",
-                    CourseName = "Databaser",
-                    CourseCode = "D0027E",
-                    StartDate = DateTime.Now,
-                    Deadline = DateTime.Now.AddDays(14),
-                    StudyHoursPerWeek = 10,
-                    UserId = user.Id
-                });
+            // Hämta testkurserna från Courses-tabellen
+            var databaseCourse = await _context.Courses
+                .FirstOrDefaultAsync(c => c.Code == "D0020E");
 
-                _context.StudyPlans.Add(new StudyPlan
-                {
-                    Name = "Javaprogrammering D0010E",
-                    CourseName = "Javaprogrammering",
-                    CourseCode = "D0010E",
-                    StartDate = DateTime.Now,
-                    Deadline = DateTime.Now.AddDays(21),
-                    StudyHoursPerWeek = 15,
-                    UserId = user.Id
-                });
+                var javaCourse = await _context.Courses
+                    .FirstOrDefaultAsync(c => c.Code == "D0018E");
 
-                await _context.SaveChangesAsync();
-            }
+            if (databaseCourse == null || javaCourse == null)
+                return BadRequest("Testkurserna hittades inte. Kör först POST /api/Course/populate-test-data.");
 
-            return Ok("Test studieplaner har lagts till.");
+            _context.StudyPlans.Add(new StudyPlan
+            {
+                Name = "Databaser D0027E",
+                CourseId = databaseCourse.Id,
+                StartDate = DateTime.Now,
+                Deadline = DateTime.Now.AddDays(14),
+                StudyHoursPerWeek = 10,
+                UserId = user.Id
+            });
+
+            _context.StudyPlans.Add(new StudyPlan
+            {
+                Name = "Javaprogrammering D0010E",
+                CourseId = javaCourse.Id,
+                StartDate = DateTime.Now,
+                Deadline = DateTime.Now.AddDays(21),
+                StudyHoursPerWeek = 15,
+                UserId = user.Id
+            });
+
+            await _context.SaveChangesAsync();
         }
+
+    return Ok("Test studieplaner har lagts till.");
     }
+}

@@ -233,16 +233,8 @@ namespace Backend.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("CourseCode")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
                     b.Property<int>("CourseId")
                         .HasColumnType("INTEGER");
-
-                    b.Property<string>("CourseName")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
 
                     b.Property<DateTime>("Deadline")
                         .HasColumnType("TEXT");
