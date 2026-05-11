@@ -79,7 +79,12 @@ public class StudyPlanController :ControllerBase
             .Select(sp => new
         {
             sp.Id,
-            sp.Name
+            sp.Name,
+            sp.CourseName,
+            sp.CourseCode,
+            sp.StartDate,
+            sp.Deadline,
+            sp.StudyHoursPerWeek
         })
         .ToListAsync();
 
@@ -124,33 +129,43 @@ public class StudyPlanController :ControllerBase
         return Ok("Studieplanen har tagits bort");
     }
 
-        [HttpPost("populate-test-data")]
-    public async Task<IActionResult> PopulateTestData()
-    {
-        var email = "student1@ltu.se";
-
-        var user = await _userManager.FindByEmailAsync(email);
-
-        if (user == null)
-            return NotFound("Testanvändare hittades inte.");
-
-        if (!_context.StudyPlans.Any(sp => sp.UserId == user.Id))
+        [HttpGet("populate-test-data")]
+        public async Task<IActionResult> PopulateTestData()
         {
-            _context.StudyPlans.Add(new StudyPlan
-            {
-                Name = "Databaser Studieplan",
-                UserId = user.Id
-            });
+            var email = "student@ltu.se";
 
-            _context.StudyPlans.Add(new StudyPlan
-            {
-                Name = "Java Studieplan",
-                UserId = user.Id
-            });
+            var user = await _userManager.FindByEmailAsync(email);
 
-            await _context.SaveChangesAsync();
+            if (user == null)
+                return NotFound("Testanvändare hittades inte.");
+
+            if (!_context.StudyPlans.Any(sp => sp.UserId == user.Id))
+            {
+                _context.StudyPlans.Add(new StudyPlan
+                {
+                    Name = "Databaser D0027E",
+                    CourseName = "Databaser",
+                    CourseCode = "D0027E",
+                    StartDate = DateTime.Now,
+                    Deadline = DateTime.Now.AddDays(14),
+                    StudyHoursPerWeek = 10,
+                    UserId = user.Id
+                });
+
+                _context.StudyPlans.Add(new StudyPlan
+                {
+                    Name = "Javaprogrammering D0010E",
+                    CourseName = "Javaprogrammering",
+                    CourseCode = "D0010E",
+                    StartDate = DateTime.Now,
+                    Deadline = DateTime.Now.AddDays(21),
+                    StudyHoursPerWeek = 15,
+                    UserId = user.Id
+                });
+
+                await _context.SaveChangesAsync();
+            }
+
+            return Ok("Test studieplaner har lagts till.");
         }
-
-        return Ok("Test studieplaner har lagts till.");
     }
-}
