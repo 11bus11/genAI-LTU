@@ -8,6 +8,7 @@ import {
     Routes,
     Route,
 } from "react-router-dom";
+import { logout } from '../utils/auth';
 
 function CreatePlan() {
   const [chatResponse, setChatResponse] = useState();
@@ -17,6 +18,7 @@ function CreatePlan() {
   const studyTime = "";
   const description = "";
   const planContent = "";
+  const navigate = useNavigate();
 
   useEffect(() => {
     async function fetchDataAi(email, course, deadline, startTime, studyTime, description) {
@@ -111,7 +113,9 @@ function CreatePlan() {
       {/* Top bar */}
       <div className="d-flex justify-content-between text-white mb-4">
         <NavLink to="/my-plans" activeStyle>Home</NavLink>
-        <span>Logga ut</span>
+        <span onClick={() => logout(navigate)} style={{ cursor: 'pointer' }}>
+          Logga ut
+        </span>
       </div>
 
       <h2 className="text-center text-white mb-5">Generera studieplan</h2>
