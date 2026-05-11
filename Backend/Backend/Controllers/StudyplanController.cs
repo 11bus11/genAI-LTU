@@ -45,6 +45,8 @@ public class StudyPlanController :ControllerBase
             Name = $"Study Plan for {course.Name}",
             UserId = user.Id,
             CourseId = course.Id,
+            CourseName = course.Name,
+            CourseCode = course.Code,
             StartDate = request.StartDate,
             Deadline = request.Deadline,
             StudyHoursPerWeek = request.StudyHoursPerWeek,
@@ -132,7 +134,7 @@ public class StudyPlanController :ControllerBase
         [HttpGet("populate-test-data")]
         public async Task<IActionResult> PopulateTestData()
         {
-            var email = "student@ltu.se";
+            var email = "student2@ltu.se";
 
             var user = await _userManager.FindByEmailAsync(email);
 
