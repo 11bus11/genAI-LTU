@@ -19,7 +19,7 @@ function CreatePlan() {
   const planContent = "";
 
   useEffect(() => {
-    async function fetchDataAi(course, deadline, startTime, studyTime, description) {
+    async function fetchDataAi(email, course, deadline, startTime, studyTime, description) {
       // Example of fetching data from the backend
       fetch('/api/Chat/chat', {
         method: 'POST',
@@ -37,12 +37,13 @@ function CreatePlan() {
         .then(data => {
           console.log(data);
           setChatResponse(data);
+          savePlan(email, data.response , course, deadline, startTime, studyTime, description);
         })
         .catch(error => console.error('Error fetching data:', error));
     }
 
     async function savePlan(email, planContent, course, deadline, startTime, studyTime, description) {
-      fetch('/api/studyplancreate', {
+      fetch('/api/studyplan/create', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -66,6 +67,8 @@ function CreatePlan() {
           console.log('Plan saved:', data);
         })
         .catch(error => console.error('Error saving plan:', error));
+
+      
     }
 
     const generateButton = document.querySelector('#generate');
@@ -84,10 +87,10 @@ function CreatePlan() {
       const studyTime = document.querySelector('#time').value;
       const description = document.querySelector('#desc').value;
 
-      const planContent = "fetchDataAi(course, deadline, startTime, studyTime, description)";
-      //const planContent = fetchDataAi(course, deadline, startTime, studyTime, description);
+      //const planContent = "fetchDataAi(course, deadline, startTime, studyTime, description)";
+      fetchDataAi(email, course, deadline, startTime, studyTime, description);
 
-      savePlan(email, planContent, course, deadline, startTime, studyTime, description);
+      
     };
 
     if (generateButton) {
