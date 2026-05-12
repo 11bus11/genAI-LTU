@@ -92,7 +92,7 @@ function MyPlans() {
               <div className="d-flex justify-content-between">
                 <button
                   className="btn btn-primary btn-sm"
-                  onClick={() => navigate(`/viewPlan/${plan.id}`)}
+                  onClick={() => navigate(`/view-plan/${plan.id}`)}
                 >
                   Öppna
                 </button>
