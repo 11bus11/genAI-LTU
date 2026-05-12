@@ -90,7 +90,9 @@ public class StudyPlanController :ControllerBase
 
     return Ok(plans);
     }
-    /*[HttpGet("{id}")]
+    
+    /*
+    [HttpGet("{id}")]
     public async Task<IActionResult> GetStudyPlan(int id)
     {
         var plan = await _context.StudyPlans
@@ -110,10 +112,10 @@ public class StudyPlanController :ControllerBase
             plan.Deadline,
             plan.StudyHoursPerWeek,
             plan.GeneratedPlan,
-            Courses = plan.Courses
         });
     }
     */
+    
     //Delete a study plan
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteStudyPlan(int id)
