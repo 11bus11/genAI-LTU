@@ -4,13 +4,15 @@ using Microsoft.AspNetCore.Identity;
 
 [ApiController]
 [Route("api/[controller]")]
+// Study plan controller
 public class StudyPlanController :ControllerBase
 {
+    // Database context and user manager
     private readonly AppDbContext _context;
     private readonly UserManager<IdentityUser> _userManager;
 
 
-
+    // Constructor
     public StudyPlanController(AppDbContext context, UserManager<IdentityUser> userManager)
     {
         _context = context;
@@ -64,16 +66,17 @@ public class StudyPlanController :ControllerBase
     [HttpGet("my-plans")]
     public async Task<IActionResult> GetMyStudyPlans()
     {
+        // Gets user email from request header
         var email = Request.Headers["user-email"].ToString();
 
         if (string.IsNullOrEmpty(email))
             return BadRequest("Email saknas i header");
-
+        // Finds user by email
         var user = await _userManager.FindByEmailAsync(email);
 
         if (user == null)
             return NotFound("Användaren hittades inte");
-
+        // Returns study plans for the user
         var plans = await _context.StudyPlans
             .Where(sp => sp.UserId == user.Id)
             .Select(sp => new
@@ -120,17 +123,18 @@ public class StudyPlanController :ControllerBase
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteStudyPlan(int id)
     {
+        // Finds study plan by id
         var plan = await _context.StudyPlans.FindAsync(id);
 
         if (plan == null)
             return NotFound("Studieplanen hittades inte");
-
+        // Removes study plan from database
         _context.StudyPlans.Remove(plan);
         await _context.SaveChangesAsync();
 
         return Ok("Studieplanen har tagits bort");
     }
-
+        // Populates database with test study plans
         [HttpGet("populate-test-data")]
         public async Task<IActionResult> PopulateTestData()
         {
@@ -140,7 +144,7 @@ public class StudyPlanController :ControllerBase
 
             if (user == null)
                 return NotFound("Testanvändare hittades inte.");
-
+            // Checks if study plans already exist
             if (!_context.StudyPlans.Any(sp => sp.UserId == user.Id))
             {
             // Hämta testkurserna från Courses-tabellen
