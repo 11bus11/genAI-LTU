@@ -45,7 +45,7 @@ function ViewPlan() {
 
         <h5>AI-genererad studieplan</h5>
         <p style={{ whiteSpace: "pre-line" }}>
-          {plan.generatedPlan}
+          {plan.planContent}
         </p>
 
         <div className="text-end mt-3">
