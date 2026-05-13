@@ -7,7 +7,7 @@ using Google.GenAI;
 using Google.GenAI.Types;
 using Microsoft.Extensions.Configuration;
 
-
+// Gemini AI service
 public class GeminiService
 {
     private readonly HttpClient _httpClient;
@@ -19,9 +19,10 @@ public class GeminiService
         this._httpClient = httpClient;
         this.apiKey = ""; //add api key here
     }
-
+    // Sends prompt to Gemini API
     public async Task<string> getChatResponse(string prompt)
     {
+        // Creates request body for Gemini API
         var requestBody = new
         {
             contents = new[]
@@ -46,11 +47,13 @@ public class GeminiService
             Encoding.UTF8,
             "application/json"
         );
+        // Sends request to Gemini API
         var response = await _httpClient.SendAsync(request);
         if (response.IsSuccessStatusCode)
         {            
             var responseContent = await response.Content.ReadAsStringAsync();
             using var jsonDoc = JsonDocument.Parse(responseContent);
+            // Extracts AI response text
             var text = jsonDoc.RootElement
                 .GetProperty("candidates")[0]
                 .GetProperty("content")
