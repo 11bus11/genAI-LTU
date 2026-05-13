@@ -7,12 +7,13 @@ public class CourseController : ControllerBase
 {
     private readonly AppDbContext _context;
 
+     // Database context
     public CourseController(AppDbContext context)
     {
         _context = context;
     }
 
-    //Fetch course
+    //Fetch course by course code
     [HttpGet("by-code")]
     public async Task<IActionResult> GetCourseByCode([FromQuery] string code)
     {
@@ -32,10 +33,11 @@ public class CourseController : ControllerBase
             course.Name,
         });
     }
-
+     // Adds test courses to the database
     [HttpPost("populate-test-data")]
     public async Task<IActionResult> PopulateTestData()
     {
+        // Checks if courses already exist
         if (!_context.Courses.Any())
         {
             _context.Courses.Add(new Course
@@ -49,7 +51,7 @@ public class CourseController : ControllerBase
                 Code = "D0020E",
                 Name = "Java Programming"
             });
-
+            // Saves changes to database
             await _context.SaveChangesAsync();
         }
 

@@ -1,3 +1,4 @@
+// AI chat response model
 namespace Backend.Models
 {
     public class ChatResponse

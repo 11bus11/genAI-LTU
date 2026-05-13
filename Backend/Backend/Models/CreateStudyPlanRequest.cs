@@ -1,3 +1,4 @@
+// Study plan request model
 public class CreateStudyPlanRequest
 {
     public string Email { get; set; }
