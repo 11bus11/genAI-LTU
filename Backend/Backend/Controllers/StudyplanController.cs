@@ -91,31 +91,31 @@ public class StudyPlanController :ControllerBase
     return Ok(plans);
     }
     
-    /*
+    //Fetch a specific study plan
     [HttpGet("{id}")]
     public async Task<IActionResult> GetStudyPlan(int id)
     {
         var plan = await _context.StudyPlans
-            .Include(sp => sp.Courses)
             .FirstOrDefaultAsync(sp => sp.Id == id);
 
         if (plan == null)
             return NotFound("Studieplanen hittades inte");
 
+            var course = await _context.Courses.FirstOrDefaultAsync(c => c.Id == plan.CourseId);
+
         return Ok(new
         {
             plan.Id,
             plan.Name,
-            plan.CourseName,
-            plan.CourseCode,
+            CourseName = course != null ? course.Name : "Kurs inte hittad",
+            CourseCode = course != null ? course.Code : "Kurs inte hittad",
             plan.StartDate,
             plan.Deadline,
             plan.StudyHoursPerWeek,
-            plan.GeneratedPlan,
+            PlanContent = plan.PlanContent
         });
     }
-    */
-    
+
     //Delete a study plan
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteStudyPlan(int id)
