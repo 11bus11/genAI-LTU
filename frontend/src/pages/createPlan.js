@@ -134,13 +134,13 @@ function CreatePlan() {
           </div>
 
           <div className="mb-3">
-            <label>Deadline</label>
-            <input id="deadline" type="date" className="form-control" />
+            <label>Studiestart</label>
+            <input id="startTime" type="date" className="form-control" />
           </div>
 
           <div className="mb-3">
-            <label>Studiestart</label>
-            <input id="startTime" type="date" className="form-control" />
+            <label>Deadline</label>
+            <input id="deadline" type="date" className="form-control" />
           </div>
 
           <div className="mb-3">
@@ -153,6 +153,10 @@ function CreatePlan() {
             <textarea id="desc" className="form-control" placeholder="Beskriv kursen..."></textarea>
           </div>
 
+          <div className="mb-3 border rounded d-flex align-items-center justify-content-center">
+            <p className="text-muted">Dra filer hit</p>
+          </div>
+
           <div className="d-flex justify-content-between mt-4">
             <button id="generate" className="btn btn-success">Generera studieplan</button>
             <button className="btn btn-danger">Avbryt</button>
@@ -162,14 +166,10 @@ function CreatePlan() {
 
         {/* Right side */}
         <div
-          className="col-md-6 offset-md-1 border rounded d-flex align-items-center justify-content-center"
+          className="col-md-6 offset-md-1 rounded d-flex align-items-center justify-content-center"
           style={{ height: "300px", backgroundColor: "#ffffff" }}
         >
-        {chatResponse ? (
-          <p className="text-black">{chatResponse.response}</p>
-          ) : (
-          <p className="text-muted">Laddar...</p>
-        )}
+        <p className="text-black text-center">Fyll i formuläret och tryck på "Generera"-knappen för att skapa en studieplan. Notera att det kan ta lite tid, så ha tålamod.</p>
         </div>
 
       </div>
