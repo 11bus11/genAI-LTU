@@ -67,6 +67,7 @@ function CreatePlan() {
         })
         .then(data => {
           console.log('Plan saved:', data);
+          navigate('/view-plan/' + data.id);
         })
         .catch(error => console.error('Error saving plan:', error));
 
