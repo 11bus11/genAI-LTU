@@ -20,8 +20,37 @@ public class GeminiService
         this.apiKey = ""; //add api key here
     }
     // Sends prompt to Gemini API
-    public async Task<string> getChatResponse(string prompt)
+    public async Task<string> getChatResponse(string prompt, IFormFileCollection files)
     {
+        Console.WriteLine("getChatResponse called");
+        var parts = new List<object> { new { text = prompt } };
+
+        if (files != null && files.Count > 0)
+        {
+            Console.WriteLine($"Processing {files.Count} files");
+        }
+
+        foreach (var file in files ?? new FormFileCollection())
+        {
+            using (var stream = file.OpenReadStream())
+            using (var memoryStream = new MemoryStream())
+            {
+                await stream.CopyToAsync(memoryStream);
+                var base64 = Convert.ToBase64String(memoryStream.ToArray());
+                var mimeType = file.ContentType ?? "application/pdf";
+                
+                Console.WriteLine($"File: {file.FileName}, Size: {memoryStream.Length} bytes, MIME Type: {mimeType}");
+                
+                parts.Add(new
+                {
+                    inlineData = new
+                    {
+                        mimeType = mimeType,
+                        data = base64
+                    }
+                });
+            }
+        }
         // Creates request body for Gemini API
         var requestBody = new
         {
@@ -29,10 +58,7 @@ public class GeminiService
             {
                 new
                 {
-                    parts = new[]
-                    {
-                        new {text = prompt}
-                    }
+                    parts = parts
                 }
             }
         };
@@ -63,34 +89,13 @@ public class GeminiService
             return text ?? "No response from AI";
         } else
         {
-            throw new Exception($"Request failed with status code: {response.StatusCode}");
+            var errorContent = await response.Content.ReadAsStringAsync();
+            Console.WriteLine($"Gemini API Error: Status {response.StatusCode}");
+            Console.WriteLine($"Error Response: {errorContent}");
+            throw new Exception($"Request failed with status code: {response.StatusCode}. Error: {errorContent}");
         }
 
     }
 }
 
 
-/*public class GeminiService
-{
-    private readonly Client _client;
-
-    public GeminiService()
-    {
-        _client = new Client();
-    }
-
-    public async  Task<string> GenerateTextAsync(string prompt)
-    {
-        var response = await _client.Models.GenerateContentAsync(
-            model: "gemini-3-flash-preview",
-            contents:prompt
-        );
-
-        return response.Candidates?
-            .FirstOrDefault()?
-            .Content?
-            .Parts?
-            .FirstOrDefault()?
-            .Text ?? "No response from AI";
-    }
-}*/
