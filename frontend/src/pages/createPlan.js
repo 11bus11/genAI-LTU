@@ -12,6 +12,7 @@ import { logout } from '../utils/auth';
 
 function CreatePlan() {
   const [chatResponse, setChatResponse] = useState();
+  const [files, setFiles] = useState([]);
   const corse = "";
   const deadline = "";
   const startTime = "";
@@ -22,13 +23,22 @@ function CreatePlan() {
 
   useEffect(() => {
     async function fetchDataAi(email, course, deadline, startTime, studyTime, description) {
+      const formData = new FormData();
+      console.log("Files array:", files);
+      files.forEach((file) => {
+        console.log("Appending file:", file.name);
+        formData.append('files', file);
+      });
+      const prompt = 'Skapa en studieplan för kursen ' + course + 'med deadline' + deadline + 'startdatum ' + startTime + ', studietid ' + studyTime + 'timmar per vecka och beskrivning ' + description + '. Använd informationen från de bifogade filerna. Planen ska innehålla en översikt över vad som behöver göras varje vecka fram till deadline.';
+      formData.append('prompt', prompt);
+      console.log("FormData entries:");
+      for (let pair of formData.entries()) {
+        console.log(pair[0], ":", pair[1]);
+      }
       // Example of fetching data from the backend
       fetch('/api/Chat/chat', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify('Skapa en studieplan för kursen ' + course + 'med deadline' + deadline + 'startdatum ' + startTime + ', studietid ' + studyTime + 'timmar per vecka och beskrivning ' + description + '. Planen ska innehålla en översikt över vad som behöver göras varje vecka fram till deadline.'),
+        body: formData
       })
         .then(response => {
           if (!response.ok) {
@@ -74,6 +84,17 @@ function CreatePlan() {
       
     }
 
+    const dropZone = document.querySelector('#dropZone');
+    const handleDrop = (e) => {
+      e.preventDefault();
+      const droppedFiles = Array.from(e.dataTransfer.files);
+      setFiles(droppedFiles);
+    };
+
+    const handleDragOver = (e) => {
+      e.preventDefault();
+    };
+
     const generateButton = document.querySelector('#generate');
     const handleClick = (e) => {
       e.target.textContent = "Genererar...";
@@ -96,6 +117,12 @@ function CreatePlan() {
       
     };
 
+  
+    if (dropZone) {
+      dropZone.addEventListener('drop', handleDrop);
+      dropZone.addEventListener('dragover', handleDragOver);
+    }
+
     if (generateButton) {
       generateButton.addEventListener('click', handleClick);
     }
@@ -105,7 +132,7 @@ function CreatePlan() {
         generateButton.removeEventListener('click', handleClick);
       }
     };
-  }, []);
+  }, [files]);
 
 
   return (
@@ -153,8 +180,13 @@ function CreatePlan() {
             <textarea id="desc" className="form-control" placeholder="Beskriv kursen..."></textarea>
           </div>
 
-          <div className="mb-3 border rounded d-flex align-items-center justify-content-center">
+          <div id='dropZone' className="mb-3 border rounded d-flex align-items-center justify-content-center">
             <p className="text-muted">Dra filer hit</p>
+            <ul>
+              {files.map((file, index) => (
+                <li key={index}>{file.name}</li>
+              ))}
+            </ul>
           </div>
 
           <div className="d-flex justify-content-between mt-4">
@@ -162,7 +194,7 @@ function CreatePlan() {
             <button className="btn btn-danger">Avbryt</button>
           </div>
 
-        </div>
+        </div> 
 
         {/* Right side */}
         <div
