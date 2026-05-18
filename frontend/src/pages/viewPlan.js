@@ -1,7 +1,6 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import { useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate, useParams } from "react-router-dom";
 import { logout } from '../utils/auth';
 
 function ViewPlan() {
@@ -23,12 +22,25 @@ function ViewPlan() {
 
   return (
     <div className="container-fluid min-vh-100 p-4" style={{ backgroundColor: "#174a7c" }}>
-      <div className="d-flex justify-content-between text-white mb-4">
-        <span>Home</span>
-        <span onClick={() => logout(navigate)} style={{ cursor: 'pointer' }}>
-          Logga ut
-        </span>
-      </div>
+   <div className="d-flex justify-content-between mb-4">
+
+  <NavLink
+    to="/my-plans"
+    className="text-white text-decoration-none"
+  >
+    Home
+  </NavLink>
+
+  <span
+    onClick={() => logout(navigate)}
+    className="text-white text-decoration-none"
+    style={{ cursor: 'pointer' }}
+  >
+    Logga ut
+  </span>
+
+</div>
+       
 
       <h2 className="text-center text-white mb-5">
         {plan.courseName || plan.name}
