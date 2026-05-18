@@ -1,6 +1,6 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { logout } from '../utils/auth';
 
 function MyPlans() {
@@ -40,15 +40,24 @@ function MyPlans() {
       className="container-fluid min-vh-100 p-4"
       style={{ backgroundColor: "#174a7c" }}
     >
-      <div className="d-flex justify-content-between text-white mb-4">
-        <span>Home</span>
-        <span
-          onClick={() => logout(navigate)}
-          style={{ cursor: "pointer" }}
-        >
-          Logga ut
-</span>
-      </div>
+    <div className="d-flex justify-content-between mb-4">
+
+  <NavLink
+    to="/my-plans"
+    className="text-white text-decoration-none"
+  >
+    Home
+  </NavLink>
+
+  <span
+    onClick={() => logout(navigate)}
+    className="text-white text-decoration-none"
+    style={{ cursor: "pointer" }}
+  >
+    Logga ut
+  </span>
+
+</div>
 
       <div className="mx-auto" style={{ maxWidth: "900px" }}>
         <div className="d-flex justify-content-between align-items-center mb-3">
