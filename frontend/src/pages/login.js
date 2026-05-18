@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 
 function Login() {
   const [email, setEmail] = useState('');
@@ -28,6 +28,24 @@ function Login() {
 
   return (
     <div className="container-fluid min-vh-100 d-flex justify-content-center align-items-center" style={{ backgroundColor: "#174a7c" }}>
+  <div className="position-absolute top-0 start-0 end-0 d-flex justify-content-between p-4">
+
+  <NavLink
+    to="/my-plans"
+    className="text-white text-decoration-none"
+  >
+    Home
+  </NavLink>
+
+  <span
+    className="text-white text-decoration-none"
+    style={{ cursor: 'pointer' }}
+    onClick={() => navigate("/login")}
+  >
+    Logga ut
+  </span>
+
+</div>
       
       <div className="bg-white p-4 rounded" style={{ width: "300px" }}>
         <h4 className="mb-3">Logga in</h4>
