@@ -139,12 +139,22 @@ function CreatePlan() {
     <div className="container-fluid min-vh-100 p-4" style={{ backgroundColor: "#174a7c" }}>
 
       {/* Top bar */}
-      <div className="d-flex justify-content-between text-white mb-4">
-        <NavLink to="/my-plans" activeStyle>Home</NavLink>
-        <span onClick={() => logout(navigate)} style={{ cursor: 'pointer' }}>
-          Logga ut
-        </span>
-      </div>
+  <div className="d-flex justify-content-between mb-4">
+  <NavLink 
+    to="/my-plans" 
+    className="text-white text-decoration-none"
+  >
+    Home
+  </NavLink>
+
+  <span 
+    onClick={() => logout(navigate)} 
+    className="text-white text-decoration-none"
+    style={{ cursor: 'pointer' }}
+  >
+    Logga ut
+  </span>
+</div>
 
       <h2 className="text-center text-white mb-5">Generera studieplan</h2>
 
